@@ -5,11 +5,20 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
 
 
 @RestController
 @RequestMapping("/api/v1/software-engineers")
 public class SoftwareEngineerController {
+
+    private final SoftwareEngineerService softwareEngineerService;
+
+    SoftwareEngineerController(SoftwareEngineerService softwareEngineerService) {
+        this.softwareEngineerService = softwareEngineerService;
+    }
 
     public String getMethodName(@RequestParam String param) {
         return new String();
@@ -17,14 +26,17 @@ public class SoftwareEngineerController {
     
     @GetMapping
     public List<SoftwareEngineer> getEngineers() {
-        return List.of(
-                new SoftwareEngineer(
-                        1,
-                        "Enoch",
-                        "js, Node, React, Tailwindcss"),
-                new SoftwareEngineer(
-                        2,
-                        "Jason",
-                        "C++, Python, Java"));
+        return softwareEngineerService.getAllSoftwareEngineers();
+    }
+
+    public String postMethodName(@RequestBody String entity) {
+        //TODO: process POST request
+        
+        return entity;
+    }
+    
+    @PostMapping
+    public void addNewSoftwareEngineer(@RequestBody SoftwareEngineer softwareEngineer){
+        softwareEngineerService.insertSoftwareEngineer(softwareEngineer);
     }
 }
